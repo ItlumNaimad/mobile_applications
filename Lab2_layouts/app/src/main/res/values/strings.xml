@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Lab2_layouts</string>
+    <string name="start_service">START_SERVICE</string>
+    <string name="pause_service">PAUSE_SERVICE</string>
+    <string name="stop_service">STOP_SERVICE</string>
 </resources>
