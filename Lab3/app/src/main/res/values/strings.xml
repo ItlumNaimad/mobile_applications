@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Lab3_Events</string>
+
+    <string name="btn_linear_layout">LinearLayout</string>
+    <string name="btn_relative_layout">RelativeLayout</string>
+    <string name="btn_table_layout">TableLayout</string>
+
+    <string name="btn_lewo">Lewo</string>
+    <string name="btn_srodek">Środek</string>
+    <string name="btn_prawo">Prawo</string>
+
+    <string name="text_naglowek">Nagłówek</string>
+    <string name="btn_przycisk">Przycisk</string>
+
+    <string name="header_imie">Imię</string>
+    <string name="header_nazwisko">Nazwisko</string>
+    <string name="data_imie1">Anna</string>
+    <string name="data_nazwisko1">Kowalska</string>
+    <string name="data_imie2">Jan</string>
+    <string name="data_nazwisko2">Nowak</string>
+</resources>
