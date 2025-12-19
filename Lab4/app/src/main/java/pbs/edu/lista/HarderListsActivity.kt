@@ -26,7 +26,8 @@ class HarderListsActivity : AppCompatActivity() {
         // Pula możliwych nazw zwierząt
         val possibleAnimals = arrayOf(
             "Pies", "Kot", "Kangur", "Panda", "Żyrafa",
-            "Wirus", "Kaczka", "Donald", "Wilk", "Królik"
+            "Wirus", "Kaczka", "Donald", "Wilk", "Królik",
+            "Słon", "Lew"
         )
 
         // Tablica na 200 losowych elementów
