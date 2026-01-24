@@ -1,93 +1,124 @@
 package pbs.edu.lab10
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.CompareArrows
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import pbs.edu.lab10.model.Particle
 
-/**
- * Komponent wyświetlający pojedynczy wiersz z nazwą cząsteczki.
- * Teraz z dynamiczną ikoną i kolorem zależnym od typu cząsteczki.
- */
 @Composable
 fun ParticleRow(
-    particle: String,
+    particle: Particle,
     onItemClick: (String) -> Unit = {}
 ) {
-    val (icon, color) = getParticleVisuals(particle)
+    var expanded by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .height(130.dp)
-            .clickable { onItemClick(particle) },
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 300
+                )
+            )
+            .clickable {
+                // Optional: Navigate on card click, or just expand
+                // onItemClick(particle.name) 
+                expanded = !expanded
+            },
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Surface(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .size(100.dp),
-                shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                shadowElevation = 4.dp,
-                color = color.copy(alpha = 0.15f) // Delikatne tło w kolorze cząsteczki
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = "Particle Icon",
-                    tint = color,
+                Surface(
                     modifier = Modifier
                         .padding(12.dp)
-                        .fillMaxSize()
+                        .size(100.dp),
+                    shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+                    shadowElevation = 4.dp
+                ) {
+                    // Use Coil to load image
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(particle.imageUrls.firstOrNull())
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Particle Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                Column(modifier = Modifier.padding(4.dp)) {
+                    Text(
+                        text = particle.name,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                    Text(
+                        text = "Symbol: ${particle.symbol}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                    contentDescription = "Expand",
+                    modifier = Modifier
+                        .padding(25.dp)
+                        .clickable { expanded = !expanded }
                 )
             }
-            Column(modifier = Modifier.padding(start = 8.dp)) {
-                Text(
-                    text = particle,
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Text(
-                    text = "Tap for details",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
-                )
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = slideInVertically() + expandVertically() + fadeIn(),
+                exit = slideOutVertically() + shrinkVertically() + fadeOut()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Description:",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = particle.description,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(
+                        onClick = { onItemClick(particle.name) },
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        Text(text = "More Details")
+                    }
+                }
             }
         }
-    }
-}
-
-/**
- * Funkcja pomocnicza mapująca nazwę cząsteczki na ikonę i kolor.
- */
-private fun getParticleVisuals(name: String): Pair<ImageVector, Color> {
-    return when (name) {
-        "Electron" -> Pair(Icons.Default.Bolt, Color(0xFFFFD700))       // Żółty (Elektryczność)
-        "Proton" -> Pair(Icons.Default.AddCircle, Color(0xFF2196F3))    // Niebieski (Plus)
-        "Neutron" -> Pair(Icons.Default.Lens, Color(0xFF9E9E9E))        // Szary (Neutralny)
-        "Photon" -> Pair(Icons.Default.WbSunny, Color(0xFFFF5722))      // Pomarańczowy (Światło)
-        "Quark" -> Pair(Icons.Default.Extension, Color(0xFF9C27B0))     // Fioletowy (Element budulcowy)
-        "Gluon" -> Pair(Icons.Default.Link, Color(0xFF4CAF50))          // Zielony (Klej/Wiązanie)
-        "Higgs Boson" -> Pair(Icons.Default.AutoAwesome, Color(0xFFE91E63)) // Różowy (Boska cząstka)
-        "Neutrino" -> Pair(Icons.Default.BlurOn, Color(0xFF00BCD4))     // Cyjan (Duch/Przenikanie)
-        "Muon" -> Pair(Icons.Default.FlashOn, Color(0xFF3F51B5))        // Ciemny niebieski
-        "Tau" -> Pair(Icons.Default.FlashOn, Color(0xFF673AB7))         // Ciemny fiolet
-        "Z Boson" -> Pair(Icons.AutoMirrored.Filled.CompareArrows, Color(0xFF795548)) // Brązowy (Oddziaływanie)
-        "W Boson" -> Pair(Icons.AutoMirrored.Filled.CompareArrows, Color(0xFF795548)) // Brązowy
-        else -> Pair(Icons.Default.Science, Color.Black)                // Domyślny
     }
 }

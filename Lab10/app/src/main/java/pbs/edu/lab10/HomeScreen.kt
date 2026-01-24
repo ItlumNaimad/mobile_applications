@@ -11,10 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import pbs.edu.lab10.model.Particle
+import pbs.edu.lab10.model.getParticles
 
 /**
  * Główny ekran aplikacji wyświetlający listę cząsteczek elementarnych.
- * Zastępuje HomeScreen z filmami.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,10 +47,7 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun MainContent(
     navController: NavController,
-    particleList: List<String> = listOf(
-        "Electron", "Proton", "Neutron", "Photon", "Quark", "Gluon",
-        "Higgs Boson", "Neutrino", "Muon", "Tau", "Z Boson", "W Boson"
-    )
+    particleList: List<Particle> = getParticles()
 ) {
     Column(modifier = Modifier.padding(12.dp)) {
         LazyColumn {
