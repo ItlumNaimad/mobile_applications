@@ -29,7 +29,8 @@ fun getParticles(): List<Particle> {
             name = "Neutron",
             symbol = "n⁰",
             description = "A subatomic particle of about the same mass as a proton but without an electric charge.",
-            imageUrls = listOf("https://www.infoescola.com/wp-content/uploads/2010/11/neutron-510x550.jpg")
+            imageUrls = listOf("https://www.infoescola.com/wp-content/uploads/2010/11/neutron-510x550.jpg" +
+                    "")
         ),
         Particle(
             id = 4,
