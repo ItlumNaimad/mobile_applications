@@ -3,45 +3,50 @@ package pbs.edu.project
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import pbs.edu.project.data.AppDatabase
+import pbs.edu.project.data.PhotoRepository
+import pbs.edu.project.navigation.AppNavigation
 import pbs.edu.project.ui.theme.ProjectTheme
+import pbs.edu.project.utils.LocationService
+import pbs.edu.project.viewmodel.HomeViewModel
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        // 1. Inicjalizacja Bazy Danych
+        val database = AppDatabase.getDatabase(this)
+        
+        // 2. Inicjalizacja Repozytorium
+        val repository = PhotoRepository(database.photoDao())
+
+        // 3. Inicjalizacja ViewModelu z Factory
+        val viewModel: HomeViewModel by viewModels {
+            HomeViewModel.provideFactory(repository)
+        }
+
+        // 4. Inicjalizacja LocationService
+        val locationService = LocationService(this)
+
         setContent {
             ProjectTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    // 5. Uruchomienie nawigacji
+                    AppNavigation(
+                        viewModel = viewModel,
+                        locationService = locationService
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ProjectTheme {
-        Greeting("Android")
     }
 }
