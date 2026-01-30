@@ -7,6 +7,8 @@
 **Grupa:** Grupa 1
 **Data:** 30 stycznia 2026
 Skonieczny\_Damian(05\_IST\_PAM-SP5)\_gr1
+**Repozytorium**: https://github.com/ItlumNaimad/mobile_applications/tree/main/Project
+
 ---
 
 ## 1. Opis aplikacji
