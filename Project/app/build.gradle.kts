@@ -51,7 +51,6 @@ dependencies {
     val nav_version = "2.8.0"
     val room_version = "2.6.1"
     val camerax_version = "1.3.0"
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))

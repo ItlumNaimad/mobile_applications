@@ -3,13 +3,13 @@
 
 ![logo.png](logo.png)
 
-**Autor:** Damian Skonieczny  
-**Grupa:** Grupa 1
-**Data:** 30 stycznia 2026
-Skonieczny\_Damian(05\_IST\_PAM-SP5)\_gr1
+**Autor:** Damian Skonieczny    
+**Grupa:** Grupa 1  
+**Data:** 30 stycznia 2026  
+Skonieczny\_Damian(05\_IST\_PAM-SP5)\_gr1  
 **Repozytorium**: https://github.com/ItlumNaimad/mobile_applications/tree/main/Project
-
----
+  
+---  
 
 ## 1. Opis aplikacji
 
@@ -24,7 +24,7 @@ Projekt realizuje temat **"FotoMapa" / "Rejestrator zdarzeń"** z listy tematów
 *   **Trwałość danych:** Zapisywanie informacji o zdjęciach w lokalnej bazie danych oraz plików graficznych w pamięci urządzenia.
 *   **Szczegóły:** Podgląd powiększonego zdjęcia wraz z metadanymi.
 
----
+---  
 
 ## 2. Wykorzystane sensory i technologie
 
@@ -50,37 +50,45 @@ Zgodnie z wymaganiami projektowymi, aplikacja wykorzystuje następujące sensory
 *   **Wzorzec:** MVVM (Model-View-ViewModel) z Repozytorium.
 *   **Asynchroniczność:** Kotlin Coroutines & Flow.
 
----
+---  
 
 ## 3. Struktura projektu
 
-Projekt bazuje na strukturze zaleconej w instrukcji laboratoryjnej (Lab 12), rozszerzonej o warstwę danych:
+Projekt bazuje na strukturze zaleconej w instrukcji laboratoryjnej (Lab 12), rozszerzonej o warstwę danych:  
+![[uklad-plikow.PNG]]
 
-`	ext
-app/src/main/java/pbs/edu/project/
-├── data/              # Warstwa danych (Room Database, Repository, DAO)
-├── model/             # Modele danych (Entity: PhotoEntry)
-├── navigation/        # Konfiguracja nawigacji (NavHost)
-├── screens/           # Ekrany aplikacji (UI)
-│   ├── home/          # Ekran główny (Lista)
-│   ├── camera/        # Ekran aparatu (Podgląd + Akcja)
-│   └── details/       # Ekran szczegółów
-├── ui/theme/          # Stylizacja (Material3)
-├── utils/             # Klasy pomocnicze (LocationService, FileUtils)
-├── viewmodel/         # Logika biznesowa (HomeViewModel)
-└── MainActivity.kt    # Punkt startowy
+`   ext  
+app/src/main/java/pbs/edu/project/  
+├── data/              # Warstwa danych (Room Database, Repository, DAO)  
+├── model/             # Modele danych (Entity: PhotoEntry)  
+├── navigation/        # Konfiguracja nawigacji (NavHost)  
+├── screens/           # Ekrany aplikacji (UI)  
+│   ├── home/          # Ekran główny (Lista)  
+│   ├── camera/        # Ekran aparatu (Podgląd + Akcja)  
+│   └── details/       # Ekran szczegółów  
+├── ui/theme/          # Stylizacja (Material3)  
+├── utils/             # Klasy pomocnicze (LocationService, FileUtils)  
+├── viewmodel/         # Logika biznesowa (HomeViewModel)  
+└── MainActivity.kt    # Punkt startowy  
 `
-
----
+  
+---  
 
 ## 4. Zrzuty ekranu / Diagramy
 
+![[error.png]]  
+*Rys 1. Błąd uruchamiania aplikacji*
 
+![Architektura MVVM](https://developer.android.com/static/topic/libraries/architecture/images/final-architecture.png)  
+*Rys 2. Zastosowany wzorzec architektoniczny (źródło: Android Developers)*
 
-![Architektura MVVM](https://developer.android.com/static/topic/libraries/architecture/images/final-architecture.png)
-*Rys 1. Zastosowany wzorzec architektoniczny (źródło: Android Developers)*
+![[android_16kb.PNG]]
+*Rys 3. Błąd Android 16 KB Alignment - niekompatybilne z urządzeniami 16 KB*
 
----
+![[apk_size.PNG]]
+*Rys 4. Wykaz rozmiaru pakietu APK projektu*
+**
+---  
 
 ## 5. Instrukcja uruchomienia
 
@@ -92,7 +100,7 @@ Aby uruchomić projekt:
 5.  Kliknij przycisk **Run ('app')**.
 6.  Przy pierwszym uruchomieniu zezwól aplikacji na dostęp do **Aparatu** i **Lokalizacji**.
 
----
+---  
 
 ## 6. Napotkane problemy i wyzwania techniczne (Raport z implementacji)
 
@@ -105,7 +113,7 @@ Początkowo projekt został skonfigurowany na najnowszym **AGP 9.0.0** oraz **Ko
 *   **Podjęta akcja:** Próba degradacji (downgrade) AGP do wersji **8.8.0**, która jest uznawana za stabilną.
 
 ### Problem 2: Konflikt bibliotek AndroidX z AGP 8.8.0
-Po obniżeniu wersji AGP do 8.8.0, najnowsze wersje bibliotek ndroidx.core:core-ktx:1.17.0 oraz ndroidx.activity:activity-compose:1.12.2 przestały działać.
+Po obniżeniu wersji AGP do 8.8.0, najnowsze wersje bibliotek ndroidx.core:core-ktx:1.17.0 oraz androidx.activity:activity-compose:1.12.2 przestały działać.
 *   **Błąd:** Dependency 'androidx.core:core-ktx:1.17.0' requires Android Gradle plugin 8.9.1 or higher.
 *   **Analiza:** Najnowsze biblioteki Jetpack "wybiegają w przyszłość" i wymuszają użycie wersji Gradle, która z kolei psuje kompilator KSP. Powstało błędne koło zależności.
 *   **Podjęta akcja:** Ręczne, iteracyjne obniżanie wersji wszystkich kluczowych bibliotek w libs.versions.toml do starszych wydań (np. Core KTX 1.15.0), aby dopasować się do AGP 8.8.0.
@@ -114,14 +122,14 @@ Po obniżeniu wersji AGP do 8.8.0, najnowsze wersje bibliotek ndroidx.core:core
 Po rozwiązaniu problemów z zależnościami, kompilator zaczął blokować uruchomienie ze względu na nowe wymogi Androida 15 (API 36 - Baklava).
 *   **Błąd:** Wymóg wsparcia dla 16 KB page sizes dla urządzeń targetujących Android 15+.
 *   **Podjęta akcja:**
-    1.  Dodanie flagi ndroid.bundle.enableUncompressedNativeLibs=true w gradle.properties.
+    1.  Dodanie flagi android.bundle.enableUncompressedNativeLibs=true w gradle.properties.
     2.  Zmiana konfiguracji packagingOptions w uild.gradle.kts.
     3.  Ostatecznie: Zmiana compileSdk z 36 na 35 (Android 14/15 Stable), aby uniknąć problemów z wersjami Preview.
 
 ### Podsumowanie statusu
 Aplikacja jest kompletna pod względem kodu (logika, UI, sensory), jednak jej uruchomienie jest uzależnione od specyficznej konfiguracji środowiska Android Studio, które w momencie pisania tego raportu przechodzi duże zmiany w systemie budowania (przejście na AGP 9.x), co powoduje liczne niestabilności w projektach studenckich wykorzystujących KSP i Compose.
-
----
+  
+---  
 
 ## 7. Źródła i Bibliografia
 
